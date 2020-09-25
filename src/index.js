@@ -1,9 +1,10 @@
-import React,{ useState } from 'react';
+import React,{ useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 
 const NoteApp =() => {
-  const [notes, setNotes] = useState([])
+  const notesData = JSON.parse(localStorage.getItem('notes'))
+  const [notes, setNotes] = useState(notesData || [])
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
   const addNote = (e) => {
@@ -18,6 +19,10 @@ const NoteApp =() => {
   const removeNote = (title) => {
     setNotes(notes.filter((note) => note.title !== title))
   }
+
+  useEffect(() => {
+    localStorage.setItem('notes',JSON.stringify(notes))
+  })
   return (
     <div>
       <h1>Notes</h1>
@@ -39,24 +44,28 @@ const NoteApp =() => {
 }
 
 
-// const App = (props) => {
-//   const [count, setCount] = useState(props.count)
-//   const [text, setText] = useState('Set')
+const App = (props) => {
+  const [count, setCount] = useState(props.count)
+  const [text, setText] = useState('Set')
+  useEffect(() => {
+    console.log('useEffect ran');
+    document.title = 'Count ' + count
+  })
 
-//   return (
-//     <div>
-//       <p>The current {text || 'count'} is {count}</p>
-//       <button onClick={() => setCount(count+1)}>+1</button>
-//       <button onClick={() => setCount(count-1)}>-1</button>
-//       <button onClick={() => setCount(props.count)}>Reset</button>
-//       <input value={text} onChange={(e) => setText(e.target.value)} />
-//     </div>
-//   )
-// }
+  return (
+    <div>
+      <p>The current {text || 'count'} is {count}</p>
+      <button onClick={() => setCount(count+1)}>+1</button>
+      <button onClick={() => setCount(count-1)}>-1</button>
+      <button onClick={() => setCount(props.count)}>Reset</button>
+      <input value={text} onChange={(e) => setText(e.target.value)} />
+    </div>
+  )
+}
 
-// App.defaultProps = {
-//   count: 0
-// }
+App.defaultProps = {
+  count: 0
+}
 
 
 ReactDOM.render(
