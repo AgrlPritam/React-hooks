@@ -34,11 +34,7 @@ const NoteApp =() => {
     <div>
       <h1>Notes</h1>
       {notes.map((note) => (
-        <div key={note.title}>
-          <h3>{note.title}</h3>
-          <h5>{note.body}</h5>
-          <button onClick={() => removeNote(note.title)}>x</button>
-        </div>
+        <Note key={note.title} note={note} removeNote={removeNote} />
       ))}
       <p>Add Note</p>
       <form onSubmit={addNote}>
@@ -50,32 +46,49 @@ const NoteApp =() => {
   )
 }
 
-
-const App = (props) => {
-  const [count, setCount] = useState(props.count)
-  const [text, setText] = useState('Set')
+const Note = ({note, removeNote}) => {
   useEffect(() => {
-    console.log('This will only run once!');
+    console.log('Setting up effect!');
+    //For cleaning the useEffect dependencies we create a function inside this useEffect function
+    return () => {
+      console.log('Cleaning up effect');
+    }
   }, [])
-  useEffect(() => {
-    console.log('useEffect ran');
-    document.title = 'Count ' + count
-  }, [count])
 
   return (
     <div>
-      <p>The current {text || 'count'} is {count}</p>
-      <button onClick={() => setCount(count+1)}>+1</button>
-      <button onClick={() => setCount(count-1)}>-1</button>
-      <button onClick={() => setCount(props.count)}>Reset</button>
-      <input value={text} onChange={(e) => setText(e.target.value)} />
+      <h3>{note.title}</h3>
+      <h5>{note.body}</h5>
+      <button onClick={() => removeNote(note.title)}>x</button>
     </div>
   )
 }
 
-App.defaultProps = {
-  count: 0
-}
+// const App = (props) => {
+//   const [count, setCount] = useState(props.count)
+//   const [text, setText] = useState('Set')
+//   useEffect(() => {
+//     console.log('This will only run once!');
+//   }, [])
+//   useEffect(() => {
+//     console.log('useEffect ran');
+//     document.title = 'Count ' + count
+//   }, [count])
+
+//   return (
+//     <div>
+//       <p>The current {text || 'count'} is {count}</p>
+//       <button onClick={() => setCount(count+1)}>+1</button>
+//       <button onClick={() => setCount(count-1)}>-1</button>
+//       <button onClick={() => setCount(props.count)}>Reset</button>
+//       <input value={text} onChange={(e) => setText(e.target.value)} />
+//     </div>
+//   )
+// }
+
+// App.defaultProps = {
+//   count: 0
+// }
 
 
 ReactDOM.render(
